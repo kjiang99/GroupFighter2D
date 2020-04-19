@@ -1,0 +1,79 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SpawnManager : MonoBehaviour
+{
+    [SerializeField]
+    private GameObject ballContainer;
+
+    [SerializeField]
+    private GameObject ball1;
+
+    [SerializeField]
+    private GameObject ball3;
+
+
+    private List<GameObject> _ballGameObjects = new List<GameObject>();
+
+    void Start()
+    {
+        StartCoroutine("SpawnBalls");
+    }
+
+    void Update()
+    {
+        //MoveBalls();
+    }
+
+
+    private void SpawnBalls()
+    {
+        for (int i = 0; i < 12; i++)
+        {
+            Vector2 positionToSpawn = new Vector2(Random.Range(-6f, 6f), Random.Range(-6f, 6f));
+            var newBallObject = Instantiate(ball1, positionToSpawn, Quaternion.identity);
+            newBallObject.transform.parent = ballContainer.transform;
+
+            var newBall = newBallObject.GetComponent<Ball>();
+            newBall.power = 1;
+            newBall.speed = 4.0f;
+            newBall.ballCategory = BallCategory.red;
+
+            var render = newBallObject.GetComponent<SpriteRenderer>();
+            render.color = Color.red;
+
+            _ballGameObjects.Add(newBallObject);
+        }
+
+
+        for (int i = 0; i < 4; i++)
+        {
+            Vector2 positionToSpawn = new Vector2(Random.Range(-6f, 6f), Random.Range(-6f, 6f));
+            var newBallObject = Instantiate(ball3, positionToSpawn, Quaternion.identity);
+            newBallObject.transform.parent = ballContainer.transform;
+
+            var newBall = newBallObject.GetComponent<Ball>();
+            newBall.power = 3;
+            newBall.speed = 4.0f;; 
+            newBall.ballCategory = BallCategory.green;
+
+            var render = newBallObject.GetComponent<SpriteRenderer>();
+            render.color = Color.green;
+
+            _ballGameObjects.Add(newBallObject);
+        }
+    }
+
+
+    private void MoveBalls()
+    {
+        foreach (var g in _ballGameObjects)
+        {
+            var ball = g.GetComponent<Ball>();
+
+            var direction = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
+            ball.transform.Translate(direction * ball.speed * Time.deltaTime);
+        }
+    }
+}
