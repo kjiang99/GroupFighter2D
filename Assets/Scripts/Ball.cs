@@ -10,10 +10,15 @@ public class Ball : MonoBehaviour
     public float speed = 4.0f;
     public BallCategory ballCategory;
 
+    private const float cameraSize = 6.0f;
+    private const float screenRatio = 16.0f / 9.0f;
+    private float screenY = cameraSize;
+    private float screenX = cameraSize * screenRatio;
+
     private Vector2 direction;
 
-    Rigidbody2D rigidBodyComponent;
-    CircleCollider2D colliderComponent;
+    private Rigidbody2D rigidBodyComponent;
+    private CircleCollider2D colliderComponent;
 
     void Start()
     {
@@ -38,22 +43,22 @@ public class Ball : MonoBehaviour
         transform.Translate(direction * speed * Time.deltaTime);
 
 
-        if (transform.position.y > 6.0f)
+        if (transform.position.y > screenY)
         {
             direction = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 0f));
         }
 
-        if (transform.position.y < -6.0f)
+        if (transform.position.y < -screenY)
         {
             direction = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(0f, 1.0f));
         }
 
-        if (transform.position.x > (6.0f / 9.0f) * 16.0f)
+        if (transform.position.x > screenX)
         {
             direction = new Vector2(Random.Range(-1.0f, 0f), Random.Range(-1.0f, 1.0f));
         }
 
-        if (transform.position.x < (-6.0f / 9.0f) * 16.0f)
+        if (transform.position.x < -screenX)
         {
             direction = new Vector2(Random.Range(0f, 1.0f), Random.Range(-1.0f, 1.0f));
         }
@@ -66,14 +71,8 @@ public class Ball : MonoBehaviour
 
         if (collisionBall.ballCategory == this.ballCategory) //stick together
         {
-            // creates joint
-            FixedJoint2D joint = this.gameObject.AddComponent<FixedJoint2D>();
-            // sets joint position to point of contact
-            //joint.anchor = collision.GetContacts( .contacts[0].point;
-            // conects the joint to the other object
-            joint.connectedBody = collision.gameObject.GetComponent<Rigidbody2D>();//collision.contacts[0].otherCollider.transform.GetComponentInParent<Rigidbody>();
-            // Stops objects from continuing to collide and creating more joints
-            joint.enableCollision = false;
+            //collision.transform.parent = this.transform;
+            //Destroy(collision.gameObject);
         }
         else //collide
         {

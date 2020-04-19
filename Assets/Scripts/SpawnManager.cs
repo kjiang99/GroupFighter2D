@@ -14,7 +14,13 @@ public class SpawnManager : MonoBehaviour
     private GameObject ball3;
 
 
+    private const float cameraSize = 6.0f;
+    private const float screenRatio = 16.0f / 9.0f;
+    private float screenY = cameraSize;
+    private float screenX = cameraSize * screenRatio;
+
     private List<GameObject> _ballGameObjects = new List<GameObject>();
+
 
     void Start()
     {
@@ -31,7 +37,7 @@ public class SpawnManager : MonoBehaviour
     {
         for (int i = 0; i < 12; i++)
         {
-            Vector2 positionToSpawn = new Vector2(Random.Range(-6f, 6f), Random.Range(-6f, 6f));
+            Vector2 positionToSpawn = new Vector2(Random.Range(-screenX, screenX), Random.Range(-screenY, screenY));
             var newBallObject = Instantiate(ball1, positionToSpawn, Quaternion.identity);
             newBallObject.transform.parent = ballContainer.transform;
 
@@ -49,7 +55,7 @@ public class SpawnManager : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            Vector2 positionToSpawn = new Vector2(Random.Range(-6f, 6f), Random.Range(-6f, 6f));
+            Vector2 positionToSpawn = new Vector2(Random.Range(-screenX, screenX), Random.Range(-screenY, screenY));
             var newBallObject = Instantiate(ball3, positionToSpawn, Quaternion.identity);
             newBallObject.transform.parent = ballContainer.transform;
 
