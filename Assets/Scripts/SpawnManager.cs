@@ -29,7 +29,7 @@ public class SpawnManager : MonoBehaviour
 
     void Update()
     {
-        //MoveBalls();
+
     }
 
 
@@ -42,6 +42,7 @@ public class SpawnManager : MonoBehaviour
             newBallObject.transform.parent = ballContainer.transform;
 
             var newBall = newBallObject.GetComponent<Ball>();
+            newBall.id = i;
             newBall.power = 1;
             newBall.speed = 4.0f;
             newBall.ballCategory = BallCategory.red;
@@ -60,6 +61,7 @@ public class SpawnManager : MonoBehaviour
             newBallObject.transform.parent = ballContainer.transform;
 
             var newBall = newBallObject.GetComponent<Ball>();
+            newBall.id = i + 1000;
             newBall.power = 3;
             newBall.speed = 4.0f;; 
             newBall.ballCategory = BallCategory.green;
@@ -68,18 +70,6 @@ public class SpawnManager : MonoBehaviour
             render.color = Color.green;
 
             _ballGameObjects.Add(newBallObject);
-        }
-    }
-
-
-    private void MoveBalls()
-    {
-        foreach (var g in _ballGameObjects)
-        {
-            var ball = g.GetComponent<Ball>();
-
-            var direction = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
-            ball.transform.Translate(direction * ball.speed * Time.deltaTime);
         }
     }
 }

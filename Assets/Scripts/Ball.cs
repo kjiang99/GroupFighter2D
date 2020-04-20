@@ -5,10 +5,10 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public string id;
+    public int id = 0;
     public int power;
-    public float speed = 4.0f;
     public BallCategory ballCategory;
+    public float speed = 4.0f;
 
     private const float cameraSize = 6.0f;
     private const float screenRatio = 16.0f / 9.0f;
@@ -71,17 +71,23 @@ public class Ball : MonoBehaviour
 
         if (collisionBall.ballCategory == this.ballCategory) //stick together
         {
-            //collision.transform.parent = this.transform;
-            //Destroy(collision.gameObject);
+            if (this.id < collisionBall.id)
+            {
+                collisionBall.speed = 0;
+                this.power += collisionBall.power;
+                collision.transform.parent = this.transform;
+                var collisionToThisDistance = collision.transform.position - this.transform.position;
+                collision.transform.position = this.transform.position + collisionToThisDistance;
+            }
         }
         else //collide
         {
-            if (collisionBall.power < this.power)
+            if (this.power > collisionBall.power)
             {
                 Destroy(collision.gameObject);
             }
 
-            if (collisionBall.power == this.power)
+            if (this.power == collisionBall.power)
             {
                 Destroy(this.gameObject);
                 Destroy(collision.gameObject);
