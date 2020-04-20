@@ -35,7 +35,7 @@ public class SpawnManager : MonoBehaviour
 
     private void SpawnBalls()
     {
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 24; i++)
         {
             Vector2 positionToSpawn = new Vector2(Random.Range(-screenX, screenX), Random.Range(-screenY, screenY));
             var newBallObject = Instantiate(ball1, positionToSpawn, Quaternion.identity);
