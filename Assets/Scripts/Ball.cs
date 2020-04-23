@@ -12,18 +12,26 @@ public class Ball : MonoBehaviour
     private bool isChild = false;
 
     private Vector2 direction;
+    //private Vector2 targetPosition;
+
     private Rigidbody2D rigidBodyComponent;
     private CircleCollider2D colliderComponent;
 
-    private const float cameraSize = 6.0f;
+
+    private float cameraSize;
     private const float screenRatio = 16.0f / 9.0f;
-    private float screenY = cameraSize;
-    private float screenX = cameraSize * screenRatio;
+    private float screenY;
+    private float screenX;
 
 
     void Start()
     {
+        cameraSize = Camera.main.orthographicSize;
+        screenY = cameraSize;
+        screenX = cameraSize * screenRatio;
+
         direction = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
+        //targetPosition = Camera.main.ViewportToWorldPoint(new Vector2(Random.value, Random.value));
 
         rigidBodyComponent = this.gameObject.AddComponent<Rigidbody2D>();
         rigidBodyComponent.bodyType = RigidbodyType2D.Kinematic;
@@ -38,32 +46,6 @@ public class Ball : MonoBehaviour
         MoveBall();
     }
 
-
-    private void MoveBall()
-    {
-        transform.Translate(direction * speed * Time.deltaTime);
-
-
-        if (transform.position.y > screenY)
-        {
-            direction = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 0f));
-        }
-
-        if (transform.position.y < -screenY)
-        {
-            direction = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(0f, 1.0f));
-        }
-
-        if (transform.position.x > screenX)
-        {
-            direction = new Vector2(Random.Range(-1.0f, 0f), Random.Range(-1.0f, 1.0f));
-        }
-
-        if (transform.position.x < -screenX)
-        {
-            direction = new Vector2(Random.Range(0f, 1.0f), Random.Range(-1.0f, 1.0f));
-        }
-    }
 
 
     /***Compound Collider
@@ -109,4 +91,35 @@ public class Ball : MonoBehaviour
             }
         }
     }
+
+
+    private void MoveBall()
+    {
+        transform.Translate(direction * speed * Time.deltaTime);
+
+        if (transform.position.y > screenY)
+            direction = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 0f));
+        if (transform.position.y < -screenY)
+            direction = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(0f, 1.0f));
+        if (transform.position.x > screenX)
+            direction = new Vector2(Random.Range(-1.0f, 0f), Random.Range(-1.0f, 1.0f));
+        if (transform.position.x < -screenX)
+            direction = new Vector2(Random.Range(0f, 1.0f), Random.Range(-1.0f, 1.0f));
+    }
+
+
+    //private void MoveBall()
+    //{
+    //    float distance = Vector2.Distance(transform.position, targetPosition);
+
+
+    //    if (distance > 0.001f)
+    //    {
+    //        transform.position = Vector2.MoveTowards(transform.position, targetPosition, Time.deltaTime * speed);
+    //    }
+    //    else
+    //    {
+    //        targetPosition = Camera.main.ViewportToWorldPoint(new Vector2(Random.value, Random.value));
+    //    }
+    //}
 }
