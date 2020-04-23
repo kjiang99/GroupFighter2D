@@ -5,10 +5,10 @@ using UnityEngine;
 public class BallSpawner : MonoBehaviour
 {
     [SerializeField]
-    private GameObject ball1;
+    private GameObject ballPrefab;
 
     [SerializeField]
-    private GameObject ball3;
+    private Sprite[] ballSprites;  //https://www.youtube.com/watch?v=LJrc1NHY23w
 
 
     private List<Ball> ballGameObjects = new List<Ball>();
@@ -31,17 +31,18 @@ public class BallSpawner : MonoBehaviour
         for (int i = 0; i < 24; i++)
         {
             Vector2 positionToSpawn = Camera.main.ViewportToWorldPoint(new Vector2(Random.value, Random.value));
-            var newBallObject = Instantiate(ball1, positionToSpawn, Quaternion.identity);
+            var newBallObject = Instantiate(ballPrefab, positionToSpawn, Quaternion.identity);
 
             var newBall = newBallObject.GetComponent<Ball>();
             newBall.transform.parent = this.transform;
+            newBall.speed = 4.0f;
             newBall.id = i;
             newBall.power = 1;
-            newBall.speed = 4.0f;
             newBall.ballCategory = BallCategory.red;
 
 
             var spriteRender = newBall.GetComponent<SpriteRenderer>();
+            spriteRender.sprite = ballSprites[0];
             spriteRender.color = Color.red;
 
             ballGameObjects.Add(newBall);
@@ -51,7 +52,7 @@ public class BallSpawner : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             Vector2 positionToSpawn = Camera.main.ViewportToWorldPoint(new Vector2(Random.value, Random.value));
-            var newBallObject = Instantiate(ball3, positionToSpawn, Quaternion.identity);
+            var newBallObject = Instantiate(ballPrefab, positionToSpawn, Quaternion.identity);
 
             var newBall = newBallObject.GetComponent<Ball>();
             newBall.transform.parent = this.transform;
@@ -62,6 +63,7 @@ public class BallSpawner : MonoBehaviour
 
 
             var spriteRender = newBall.GetComponent<SpriteRenderer>();
+            spriteRender.sprite = ballSprites[1];
             spriteRender.color = Color.green;
 
             ballGameObjects.Add(newBall);
