@@ -2,11 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnManager : MonoBehaviour
+public class BallSpawner : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject ballContainer;
-
     [SerializeField]
     private GameObject ball1;
 
@@ -14,12 +11,13 @@ public class SpawnManager : MonoBehaviour
     private GameObject ball3;
 
 
-    private List<GameObject> ballGameObjects = new List<GameObject>();
+    private List<Ball> ballGameObjects = new List<Ball>();
 
 
     void Start()
     {
-        StartCoroutine("SpawnBalls");
+        SpawnBalls();
+        //StartCoroutine("SpawnBalls");
     }
 
     void Update()
@@ -34,18 +32,19 @@ public class SpawnManager : MonoBehaviour
         {
             Vector2 positionToSpawn = Camera.main.ViewportToWorldPoint(new Vector2(Random.value, Random.value));
             var newBallObject = Instantiate(ball1, positionToSpawn, Quaternion.identity);
-            newBallObject.transform.parent = ballContainer.transform;
 
             var newBall = newBallObject.GetComponent<Ball>();
+            newBall.transform.parent = this.transform;
             newBall.id = i;
             newBall.power = 1;
             newBall.speed = 4.0f;
             newBall.ballCategory = BallCategory.red;
 
-            var render = newBallObject.GetComponent<SpriteRenderer>();
-            render.color = Color.red;
 
-            ballGameObjects.Add(newBallObject);
+            var spriteRender = newBall.GetComponent<SpriteRenderer>();
+            spriteRender.color = Color.red;
+
+            ballGameObjects.Add(newBall);
         }
 
 
@@ -53,18 +52,19 @@ public class SpawnManager : MonoBehaviour
         {
             Vector2 positionToSpawn = Camera.main.ViewportToWorldPoint(new Vector2(Random.value, Random.value));
             var newBallObject = Instantiate(ball3, positionToSpawn, Quaternion.identity);
-            newBallObject.transform.parent = ballContainer.transform;
 
             var newBall = newBallObject.GetComponent<Ball>();
+            newBall.transform.parent = this.transform;
+            newBall.speed = 4.0f;
             newBall.id = i + 1000;
             newBall.power = 3;
-            newBall.speed = 4.0f;; 
             newBall.ballCategory = BallCategory.green;
 
-            var render = newBallObject.GetComponent<SpriteRenderer>();
-            render.color = Color.green;
 
-            ballGameObjects.Add(newBallObject);
+            var spriteRender = newBall.GetComponent<SpriteRenderer>();
+            spriteRender.color = Color.green;
+
+            ballGameObjects.Add(newBall);
         }
     }
 }

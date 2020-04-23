@@ -96,5 +96,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   power: 0
-  speed: 4
   ballCategory: 0
+  speed: 4
