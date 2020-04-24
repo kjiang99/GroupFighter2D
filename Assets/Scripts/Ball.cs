@@ -11,6 +11,12 @@ public class Ball : MonoBehaviour
     public float speed = 4.0f;
     private bool isChild = false;
 
+
+    private float cameraSize;
+    private const float screenRatio = 16.0f / 9.0f;
+    private float screenY;
+    private float screenX;
+
     private Vector2 direction;
     //private Vector2 targetPosition;
 
@@ -18,11 +24,9 @@ public class Ball : MonoBehaviour
     private CircleCollider2D colliderComponent;
 
 
-    private float cameraSize;
-    private const float screenRatio = 16.0f / 9.0f;
-    private float screenY;
-    private float screenX;
-
+    [SerializeField]
+    private AudioClip[] ballSounds;
+    private AudioSource audioSourceComponent;
 
     void Start()
     {
@@ -33,11 +37,12 @@ public class Ball : MonoBehaviour
         direction = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
         //targetPosition = Camera.main.ViewportToWorldPoint(new Vector2(Random.value, Random.value));
 
-        rigidBodyComponent = this.gameObject.AddComponent<Rigidbody2D>();
-        rigidBodyComponent.bodyType = RigidbodyType2D.Kinematic;
+        rigidBodyComponent = this.GetComponent<Rigidbody2D>();
 
         colliderComponent = this.gameObject.AddComponent<CircleCollider2D>();
         colliderComponent.isTrigger = true;
+
+        audioSourceComponent = this.GetComponent<AudioSource>();
     }
 
 
@@ -57,6 +62,9 @@ public class Ball : MonoBehaviour
     ***/
     private void OnTriggerEnter2D(Collider2D other)
     {
+        AudioClip stickClip = ballSounds[0];
+        AudioClip collisionClip = ballSounds[1];
+
         var otherBall = other.gameObject.GetComponent<Ball>();
 
         if (!this.isChild && !otherBall.isChild)
@@ -75,16 +83,20 @@ public class Ball : MonoBehaviour
 
                 var render = otherBall.GetComponent<SpriteRenderer>();
                 render.color = Color.yellow;
+
+                audioSourceComponent.PlayOneShot(stickClip);
             }
             else //collide
             {
                 if (this.power > otherBall.power)
                 {
+                    audioSourceComponent.PlayOneShot(collisionClip);
                     Destroy(other.gameObject);
                 }
 
                 if (this.power == otherBall.power)
                 {
+                    AudioSource.PlayClipAtPoint(collisionClip, Camera.main.transform.position); //Both balls destroied, so need to PlayClipAtPoint
                     Destroy(this.gameObject);
                     Destroy(other.gameObject);
                 }
