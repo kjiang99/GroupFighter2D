@@ -1,6 +1,8 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BallSpawner : MonoBehaviour
 {
@@ -10,19 +12,30 @@ public class BallSpawner : MonoBehaviour
     [SerializeField]
     private Sprite[] ballSprites;  //https://www.youtube.com/watch?v=LJrc1NHY23w
 
+    [SerializeField]
+    private Text leftText;
 
-    private List<Ball> ballGameObjects = new List<Ball>();
+    [SerializeField]
+    private Text rightText;
+
+    private List<Ball> balls = new List<Ball>();
+
+    private int redCount = 0;
+    private int greenCount = 0;
 
 
     void Start()
     {
         SpawnBalls();
         //StartCoroutine("SpawnBalls");
+
+        redCount = balls.Where(x => x.ballCategory == BallCategory.red).Count();
+        greenCount = balls.Where(x => x.ballCategory == BallCategory.green).Count();
     }
 
     void Update()
     {
-
+        CalculateScore();
     }
 
 
@@ -45,7 +58,7 @@ public class BallSpawner : MonoBehaviour
             spriteRender.sprite = ballSprites[0];
             spriteRender.color = Color.red;
 
-            ballGameObjects.Add(newBall);
+            balls.Add(newBall);
         }
 
 
@@ -66,7 +79,26 @@ public class BallSpawner : MonoBehaviour
             spriteRender.sprite = ballSprites[1];
             spriteRender.color = Color.green;
 
-            ballGameObjects.Add(newBall);
+            balls.Add(newBall);
+        }
+    }
+
+
+    private void CalculateScore()
+    {
+        int redCurrent = balls.Where(x => x != null && x.ballCategory == BallCategory.red).Count();
+        int greenCurrent = balls.Where(x => x != null && x.ballCategory == BallCategory.green).Count();
+
+        if (redCurrent < redCount)
+        {
+            leftText.text = $"Red(Power 1): {redCurrent}";
+            redCount = redCurrent;
+        }
+
+        if (greenCurrent < greenCount)
+        {
+            rightText.text = $"Green(Power 3): {greenCurrent}";
+            greenCount = greenCurrent;
         }
     }
 }
