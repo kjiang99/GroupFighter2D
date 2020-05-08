@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public int id = 0;
     public int power = 0;
     public BallCategory ballCategory;
     public float speed = 4.0f;

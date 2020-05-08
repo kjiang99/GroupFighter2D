@@ -47,9 +47,9 @@ public class BallSpawner : MonoBehaviour
             var newBallObject = Instantiate(ballPrefab, positionToSpawn, Quaternion.identity);
 
             var newBall = newBallObject.GetComponent<Ball>();
+            newBall.name = $"B-{i}";
             newBall.transform.parent = this.transform;
             newBall.speed = 4.0f;
-            newBall.id = i;
             newBall.power = 1;
             newBall.ballCategory = BallCategory.red;
 
@@ -68,9 +68,9 @@ public class BallSpawner : MonoBehaviour
             var newBallObject = Instantiate(ballPrefab, positionToSpawn, Quaternion.identity);
 
             var newBall = newBallObject.GetComponent<Ball>();
+            newBall.name = $"B-{i + 1000}";
             newBall.transform.parent = this.transform;
             newBall.speed = 4.0f;
-            newBall.id = i + 1000;
             newBall.power = 3;
             newBall.ballCategory = BallCategory.green;
 
